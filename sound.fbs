@@ -1,0 +1,56 @@
+namespace Contract;
+
+table SelectAllSound
+{  
+  with_binary_data: bool;
+}
+
+table SelectSoundIds
+{
+  ids : [int] (required);
+}
+
+table CreateSound
+{
+  name:string;
+  extension:string;
+  data: [byte];
+}
+
+table ModifySound
+{
+  id: int;
+  name:string;
+  extension:string;
+  data: [byte];
+}
+
+table DeleteSound
+{
+  id: int;
+}
+
+table Sound
+{
+  id: int;
+  name: string;
+  extension: string;
+  is_default: bool;
+  data: [byte];
+}
+
+union MessageType
+{
+  SelectAllSound,
+  SelectSoundIds,
+  CreateSound,
+  ModifySound,
+  DeleteSound,
+  Sound
+}
+
+table Message
+{
+  type_of_message: MessageType (required);
+}
+root_type Message;
