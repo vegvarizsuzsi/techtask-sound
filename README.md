@@ -23,7 +23,7 @@ Make sure you have the following installed on your machine:
 1. Clone the repository:
 
    
-``` bash
+``` sh
    git clone https://github.com/vegvarizsuzsi/techtask-sound.git
 ```
 2. Configure the database settings in
@@ -31,7 +31,7 @@ Make sure you have the following installed on your machine:
    src/main/resources/application.properties.
 ```
 3. Build and run the project:
-```bash
+```sh
 cd techtask-sound
 mvn spring-boot:run
 ```
