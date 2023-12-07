@@ -10,12 +10,11 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class SoundControllerIntegrationTest {
+class SoundControllerIntegrationTestIT {
 
     @LocalServerPort
     private int port;
@@ -25,10 +24,25 @@ class SoundControllerIntegrationTest {
 
     @Test
     void handleSelectAllSoundRequest() {
-        List<SoundEntity> soundEntities = List.of(
-                restTemplate.getForObject("http://localhost:" + port + "/api/sounds/selectAllSound", SoundEntity[].class)
+
+        SoundEntity soundEntity = new SoundEntity("soundToFetch", new byte[]{}, ".mp3", LocalDateTime.now());
+
+        ResponseEntity<SoundEntity> createResponseEntity = restTemplate.postForEntity(
+                "http://localhost:" + port + "/api/sounds/createSound",
+                soundEntity,
+                SoundEntity.class
         );
-        assertEquals(1, soundEntities.size());
+
+        ResponseEntity<SoundEntity[]> responseEntity = restTemplate.postForEntity(
+                "http://localhost:" + port + "/api/sounds/selectAllSound",
+                null,
+                SoundEntity[].class
+        );
+
+        SoundEntity[] soundEntities = responseEntity.getBody();
+
+        assertNotNull(soundEntities);
+        assertTrue(soundEntities.length > 0);
     }
 
 
