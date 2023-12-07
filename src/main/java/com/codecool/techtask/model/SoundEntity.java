@@ -28,13 +28,13 @@ public class SoundEntity {
     private String soundName;
 
     @Lob
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private byte[] soundData;
 
     @Column(nullable = false)
     private String soundExtension;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private LocalDateTime soundCreatedDatetime;
     private LocalDateTime soundUpdatedDatetime;
 
