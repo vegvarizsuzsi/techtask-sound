@@ -62,5 +62,23 @@ class SoundControllerIntegrationTest {
 
     @Test
     void handleDeleteSoundRequest() {
+        byte[] data = "newData".getBytes();
+        SoundEntity soundEntity = new SoundEntity("soundToDelete", data, ".mp3", LocalDateTime.now());
+        ResponseEntity<SoundEntity> createResponseEntity = restTemplate.postForEntity(
+                "http://localhost:" + port + "/api/sounds/createSound",
+                soundEntity,
+                SoundEntity.class
+        );
+        assertEquals(HttpStatus.CREATED, createResponseEntity.getStatusCode());
+
+        int soundIdToDelete = createResponseEntity.getBody().getSoundId();
+        ResponseEntity<Boolean> deleteResponseEntity = restTemplate.exchange(
+                "http://localhost:" + port + "/api/sounds/deleteSound/" + soundIdToDelete,
+                HttpMethod.POST,
+                null,
+                Boolean.class
+        );
+        assertEquals(HttpStatus.OK, deleteResponseEntity.getStatusCode());
+        assertTrue(deleteResponseEntity.getBody());
     }
 }
