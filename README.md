@@ -15,6 +15,7 @@ This project is a Spring Boot application for managing sound entities. It provid
 Make sure you have the following installed on your machine:
 
 - Java (JDK 17 or higher)
+- JUnit
 - Maven
 - PostgreSQL
 
