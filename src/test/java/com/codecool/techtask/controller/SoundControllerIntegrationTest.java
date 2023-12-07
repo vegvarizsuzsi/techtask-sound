@@ -40,7 +40,6 @@ class SoundControllerIntegrationTest {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<SoundEntity> request = new HttpEntity<>(soundEntity, headers);
 
-
         ResponseEntity<SoundEntity> responseEntity = restTemplate.exchange(
                 "http://localhost:" + port + "/api/sounds/createSound",
                 HttpMethod.POST,
@@ -52,13 +51,38 @@ class SoundControllerIntegrationTest {
 
         SoundEntity createdSound = responseEntity.getBody();
         assertNotNull(createdSound);
-
-
     }
 
     @Test
     void handleModifySoundRequest() {
+        byte[] originalData = "originalData".getBytes();
+        SoundEntity originalSoundEntity = new SoundEntity("originalSound", originalData, ".mp3", LocalDateTime.now());
+        ResponseEntity<SoundEntity> createResponseEntity = restTemplate.postForEntity(
+                "http://localhost:" + port + "/api/sounds/createSound",
+                originalSoundEntity,
+                SoundEntity.class
+        );
+        assertEquals(HttpStatus.CREATED, createResponseEntity.getStatusCode());
+
+        int soundIdToModify = createResponseEntity.getBody().getSoundId();
+        assertEquals("originalSound", createResponseEntity.getBody().getSoundName());
+
+
+        byte[] modifiedData = "modifiedData".getBytes();
+        SoundEntity modifiedSoundEntity = new SoundEntity("modifiedSound", modifiedData, ".mp3", LocalDateTime.now());
+
+        ResponseEntity<SoundEntity> modifyResponseEntity = restTemplate.exchange(
+                "http://localhost:" + port + "/api/sounds/modifySound/" + soundIdToModify,
+                HttpMethod.POST,
+                new HttpEntity<>(modifiedSoundEntity),
+                SoundEntity.class
+        );
+
+        assertEquals(HttpStatus.OK, modifyResponseEntity.getStatusCode());
+        assertEquals("modifiedSound", modifyResponseEntity.getBody().getSoundName());
+        assertArrayEquals(modifiedData, modifyResponseEntity.getBody().getSoundData());
     }
+
 
     @Test
     void handleDeleteSoundRequest() {
