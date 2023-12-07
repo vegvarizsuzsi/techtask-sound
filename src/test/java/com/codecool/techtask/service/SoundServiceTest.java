@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +38,8 @@ class SoundServiceTest {
 
     @Test
     void createSound() {
-        SoundEntity sound = new SoundEntity();
+        byte[] data = "newData".getBytes();
+        SoundEntity sound = new SoundEntity("sound1", data, ".mp3", LocalDateTime.now());
 
         when(soundRepository.save(any(SoundEntity.class))).thenReturn(sound);
 
@@ -50,8 +52,9 @@ class SoundServiceTest {
     @Test
     void modifySound() {
         int soundId = 1;
-        SoundEntity existingSound = new SoundEntity();
-        SoundEntity modifiedSound = new SoundEntity();
+        byte[] data = "newData".getBytes();
+        SoundEntity existingSound = new SoundEntity("existingSound", data, ".mp3", LocalDateTime.now());
+        SoundEntity modifiedSound = new SoundEntity("modifiedSound", data, ".mp3", LocalDateTime.now());
 
         when(soundRepository.findById(eq(soundId))).thenReturn(Optional.of(existingSound));
         when(soundRepository.save(any(SoundEntity.class))).thenReturn(modifiedSound);
