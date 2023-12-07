@@ -38,6 +38,17 @@ public class SoundEntity {
     private LocalDateTime soundCreatedDatetime;
     private LocalDateTime soundUpdatedDatetime;
 
+    public SoundEntity() {
+    }
+
+
+    public SoundEntity(String soundName, byte[] soundData, String soundExtension, LocalDateTime soundCreatedDatetime) {
+        this.soundName = soundName;
+        this.soundData = soundData;
+        this.soundExtension = soundExtension;
+        this.soundCreatedDatetime = LocalDateTime.now();
+    }
+
 
 }
 
